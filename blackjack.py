@@ -104,18 +104,6 @@ class Player:
         answer = input("How much money would you like to start off with (Minimum $50.00)?  ")
         self.capital = float(answer)
 
-    # def remove_one(self):
-    #     # Note we remove one card from the list of all_cards
-    #     # We state 0 to remove from the "top" of the deck
-    #     # We'll imagine index -1 as the bottom of the deck
-    #     return self.all_cards.pop(0)
-
-    # def add_cards(self, new_cards):
-    #     if type(new_cards) == type([]):
-    #         self.all_cards.extend(new_cards)
-    #     else:
-    #         self.all_cards.append(new_cards)
-
     def __str__(self):
         return f'player {self.name} has %s' % [str(x) for x in self.player_hand]
         # 'my list is %s' % [str(x) for x in myList]
@@ -152,6 +140,7 @@ class Player:
         while aces_counting_as_eleven > 0 and points > 21:
             points -= 10
             aces_counting_as_eleven -= 1
+
         return points
 
     def player_turn(self, deck, dealer, clear):
@@ -174,9 +163,6 @@ class Player:
                 if total_points > 21:
                     playing_hand = False
 
-                # if not player_over_21:
-                #     player_decision = "Lost"
-                #     playing_hand = False
             if player_decision == "S":
                 playing_hand = False
                 total_points = self.tabulate_player_points()
@@ -186,21 +172,6 @@ class Player:
     def dealer_turn(self, deal_results, deck, player_results, player):
         playing_hand_dealer = True
         self.is_dealer = False
-        # def dealer_count():
-        #     points = 0
-        #     aces_counting_as_eleven = 0
-        #     for card in self.player_dealer.player_hand:
-        #         points += card.value
-        #         if card.rank == "Ace":
-        #             aces_counting_as_eleven += 1
-        #     while aces_counting_as_eleven > 0 and points > 21:
-        #         points -= 10
-        #         aces_counting_as_eleven -= 1
-        #     return points
-
-        # for i in range(len(self.player_dealer.player_hand)):
-        #     check += self.player_dealer.player_hand[i].value
-        # return points
 
         while playing_hand_dealer:
             # self.play_blackjack.clear()
@@ -219,12 +190,6 @@ class Player:
                 elif player_dealer_points == player_results:
                     return "TIE"
         return deal_results
-
-    # def initial_deal(self):
-    #     for i in range(2):
-    #         self.player_dealer.deal_one(self.player_dealer.player_hand)
-    #         self.player_one.deal_one(self.player_one.player_hand)
-    #     return self.player_one.player_hand, self.player_dealer.player_hand
 
     def initial_deal(self, new_deck):
         for i in range(2):
