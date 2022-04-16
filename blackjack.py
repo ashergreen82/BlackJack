@@ -45,7 +45,7 @@ print(format_float)
 import random
 from os import system, name
 
-suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
+
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
 values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eight': 8, 'Nine': 9, 'Ten': 10,
           'Jack': 10, 'Queen': 10, 'King': 10, 'Ace': 11}
@@ -63,11 +63,11 @@ class Card:
 
 
 class Deck:
-
+    suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
     def __init__(self):
         # Note this only happens once upon creation of a new Deck
         self.all_cards = []
-        for suit in suits:
+        for suit in self.suits:
             for rank in ranks:
                 # This assumes the Card class has already been defined!
                 self.all_cards.append(Card(suit, rank))
@@ -88,12 +88,14 @@ class Player:
     def __init__(self, is_dealer = False):
         # A new player has no cards
         self.player_hand = []
+        self.is_dealer = is_dealer
         if is_dealer:
             self.name = "Dealer"
             self.capital = 1000000.00
         else:
             self.get_players_name()
             self.get_starting_capital()
+        self.starting_capital = self.capital
 
     def get_players_name(self):
         self.name = input("What is your name?  ")
@@ -240,9 +242,7 @@ class Game_play:
         print("Later version so this game will have more advanced options like cards splits and double-downs.")
         print("So, let's get started")
         self.player_one = Player()
-        starting_capital = self.player_one.capital
         self.player_dealer = Player(is_dealer=True)
-        self.player_dealer.name = "Dealer"
         self.new_deck = []
 
     # def display_cards(self, deal_results):
