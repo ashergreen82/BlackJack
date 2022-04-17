@@ -154,7 +154,9 @@ class Player:
             # Ask the player for his choice:  Hit or hold
             player_decision = self.get_player_decision()
             if player_decision == "H":
+                clear()
                 deck.deal_one(self.player_hand)
+                dealer.display_cards_during_the_game()
                 self.display_cards_during_the_game()
                 # check_hand = play_blackjack.check_if_player_over_21()
                 total_points = self.tabulate_player_points()
@@ -169,12 +171,13 @@ class Player:
 
         return player_decision, total_points
 
-    def dealer_turn(self, deal_results, deck, player_results, player):
+    def dealer_turn(self, deal_results, deck, player_results, player, clear):
         playing_hand_dealer = True
         self.is_dealer = False
 
         while playing_hand_dealer:
             # self.play_blackjack.clear()
+            clear()
             self.display_cards_during_the_game()
             player.display_cards_during_the_game()
             player_dealer_points = self.tabulate_player_points()
@@ -201,6 +204,7 @@ class Game_play:
     # player_dealer: Player
 
     def __init__(self):
+        self.clear()
         print("Welcome to Blackjack!")
         print("In this game you will play against the dealer which is the computer")
         print("This is a basic game of blackjack so the only options at this time are \"HIT\" or \"Stand\"")
@@ -250,12 +254,6 @@ class Game_play:
 
         return self.player_one.capital, player_bet_amount
 
-    # def initial_deal(self):
-    #     for i in range(2):
-    #         self.player_dealer.deal_one(self.player_dealer.player_hand)
-    #         self.player_one.deal_one(self.player_one.player_hand)
-    #     return self.player_one.player_hand, self.player_dealer.player_hand
-
     # End of game routine is here:
     def end_of_game(self, starting_capital, game_round, game_on):
         if self.player_one.capital <= 0:
@@ -286,6 +284,7 @@ class Game_play:
         dealer_turn_results = []
         player_turn_results = []
         player_one_starting_capital = self.player_one.capital
+        self.clear()
         while game_on:
             player_bet_amount = 0
             player_total_bet_for_this_round = 0
@@ -335,7 +334,7 @@ class Game_play:
                 continue
             if player_answer.upper() == "S":
                 # dealer_turn_results = self.dealer_turn(deal_results, player_points)
-                dealer_turn_results = self.player_dealer.dealer_turn(deal_results, self.new_deck, player_points, self.player_one)
+                dealer_turn_results = self.player_dealer.dealer_turn(deal_results, self.new_deck, player_points, self.player_one, self.clear)
                 if dealer_turn_results.upper() == "WIN":
                     print("Congratulations! You win the hand!")
                     # Player wins the pot and is added to player_one.capital
