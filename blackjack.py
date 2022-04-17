@@ -112,7 +112,7 @@ class Player:
         # return f'Player {self.name} has {self.capital}, and cards in hand = {self.player_hand}'
 
     def display_cards_during_the_game(self):
-        print(f"{self.name} Hand")
+        print(f"{self.name}'s Hand")
         for i, a_card in enumerate(self.player_hand):
             if self.is_dealer and i == 0:
                 print("    Card Face Down")
@@ -328,6 +328,11 @@ class Game_play:
             player_answer, player_points = player_turn_results
             # player_answer = input("Did the player go bust?  ")
             # Dealer now has a turn provided player has not busted
+            if player_points > 21:
+                print("You hand is over 21, you lost this round")
+                current_end_of_game = play_blackjack.end_of_game(self, game_round, game_on)
+                game_round, game_on = current_end_of_game
+                continue
             if player_answer.upper() == "S":
                 # dealer_turn_results = self.dealer_turn(deal_results, player_points)
                 dealer_turn_results = self.player_dealer.dealer_turn(deal_results, self.new_deck, player_points, self.player_one)
