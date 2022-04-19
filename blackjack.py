@@ -101,15 +101,23 @@ class Player:
         self.name = input("What is your name?  ")
 
     def get_starting_capital(self):
-        answer = input("How much money would you like to start off with (Minimum $50.00)?  ")
-        self.capital = float(answer)
+        input_check = True
+        starting_capital = 0.0
+        while input_check:
+            starting_capital = input("How much money would you like to start off with (Minimum $50.00)?  ")
+            try:
+                starting_capital = float(starting_capital)
+                if starting_capital < 50:
+                    print("Please enter a dollar value between $50 or greater.")
+                    continue
+                input_check = False
+            except ValueError:
+                print("Please enter a dollar value between $50 or greater.")
+
+        self.capital = float(starting_capital)
 
     def __str__(self):
         return f'player {self.name} has %s' % [str(x) for x in self.player_hand]
-        # 'my list is %s' % [str(x) for x in myList]
-        # print(f'{self.player_hand}')
-        # return f'Player {self.name} has {self.capital}'
-        # return f'Player {self.name} has {self.capital}, and cards in hand = {self.player_hand}'
 
     def display_cards_during_the_game(self):
         print(f"{self.name}'s Hand")
@@ -214,15 +222,6 @@ class Game_play:
         self.player_dealer = Player(is_dealer=True)
         self.new_deck = []
 
-    # def display_cards(self, deal_results):
-    #     print("Dealer Hand")
-    #     print("    Card Face Down")
-    #     print(f"    {self.player_dealer.player_hand[0]}\n")
-    #     print("Player Hand")
-    #     for i in range(2):
-    #         print(f"    {self.player_one.player_hand[i]}")
-    #     print("\n")
-
     def clear(self):
         # for windows
         if name == 'nt':
@@ -283,7 +282,7 @@ class Game_play:
         deal_results = []
         dealer_turn_results = []
         player_turn_results = []
-        player_one_starting_capital = self.player_one.capital
+        starting_capital = self.player_one.capital
         self.clear()
         while game_on:
             player_bet_amount = 0
@@ -301,7 +300,7 @@ class Game_play:
             # function it checks how much the player has left and if it has nothing left returns a 0, which you can see
             # here is then used to exit the game safely through the end game method.
             if player_bet_amount[1] == 0:
-                current_end_of_game = play_blackjack.end_of_game(self, game_round, game_on)
+                current_end_of_game = play_blackjack.end_of_game(self, starting_capital, game_round, game_on)
                 game_round, game_on = current_end_of_game
                 continue
             total_bet_amount = (player_bet_amount[1] * 2)
@@ -329,7 +328,7 @@ class Game_play:
             # Dealer now has a turn provided player has not busted
             if player_points > 21:
                 print("You hand is over 21, you lost this round")
-                current_end_of_game = play_blackjack.end_of_game(self, game_round, game_on)
+                current_end_of_game = play_blackjack.end_of_game(self, starting_capital, game_round, game_on)
                 game_round, game_on = current_end_of_game
                 continue
             if player_answer.upper() == "S":
@@ -345,7 +344,7 @@ class Game_play:
                 elif dealer_turn_results.upper() == "TIE":
                     print("This round has resulted in a tie, no one wins the pot")
                     self.player_one.capital += player_total_bet_for_this_round
-            current_end_of_game = play_blackjack.end_of_game(self, game_round, game_on)
+            current_end_of_game = play_blackjack.end_of_game(self, starting_capital, game_round, game_on)
             game_round, game_on = current_end_of_game
 
 
