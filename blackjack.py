@@ -100,18 +100,18 @@ class Player:
         self.name = input("What is your name?  ")
 
     def get_starting_capital(self):
-        input_check = True
         starting_capital = 0.0
-        while input_check:
+        while True:
             starting_capital = input("How much money would you like to start off with (Minimum $50.00)?  ")
             try:
                 starting_capital = float(starting_capital)
-                if starting_capital < 50:
-                    print("Please enter a dollar value between $50 or greater.")
-                    continue
-                input_check = False
+                if starting_capital >= 50:
+                    break
+                else:
+                    print("Please enter a dollar value of $50 or more.")
+
             except ValueError:
-                print("Please enter a dollar value between $50 or greater.")
+                print("Please enter a dollar value of $50 or more.")
 
         self.capital = float(starting_capital)
 
