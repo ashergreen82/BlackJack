@@ -46,29 +46,28 @@ import random
 from os import system, name
 
 
-ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
-values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eight': 8, 'Nine': 9, 'Ten': 10,
-          'Jack': 10, 'Queen': 10, 'King': 10, 'Ace': 11}
-
 
 class Card:
-
+    values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eight': 8, 'Nine': 9, 'Ten': 10,
+              'Jack': 10, 'Queen': 10, 'King': 10, 'Ace': 11}
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
-        self.value = values[rank]
+        self.value = self.values[rank]
 
     def __str__(self):
         return self.rank + ' of ' + self.suit
 
 
 class Deck:
+
     suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
+    ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
     def __init__(self):
         # Note this only happens once upon creation of a new Deck
         self.all_cards = []
         for suit in self.suits:
-            for rank in ranks:
+            for rank in self.ranks:
                 # This assumes the Card class has already been defined!
                 self.all_cards.append(Card(suit, rank))
 
@@ -254,7 +253,7 @@ class Game_play:
         return self.player_one.capital, player_bet_amount
 
     # End of game routine is here:
-    def end_of_game(self, starting_capital, game_round, game_on):
+    def end_of_game(self, game_round, game_on):
         if self.player_one.capital <= 0:
             print("You have nothing left to bet, you have lost the game")
             print("Thank you for playing blackjack with me")
@@ -264,7 +263,7 @@ class Game_play:
         player_decision = input("Would you like to play another round? ")
         if player_decision.upper() == "NO":
             game_on = False
-            print(f"You started out with ${starting_capital}")
+            print(f"You started out with ${self.player_one.starting_capital}")
             print(f"You finished the game with ${self.player_one.capital}.")
             print("Thank you for playing Blackjack with me today.  \nIt was fun!!!!")
         else:
@@ -279,10 +278,9 @@ class Game_play:
     def game_play(self):
         game_on = True
         game_round = 1
-        deal_results = []
-        dealer_turn_results = []
-        player_turn_results = []
-        starting_capital = self.player_one.capital
+        # deal_results = []
+        # dealer_turn_results = []
+        # player_turn_results = []
         self.clear()
         while game_on:
             player_bet_amount = 0
@@ -300,7 +298,7 @@ class Game_play:
             # function it checks how much the player has left and if it has nothing left returns a 0, which you can see
             # here is then used to exit the game safely through the end game method.
             if player_bet_amount[1] == 0:
-                current_end_of_game = play_blackjack.end_of_game(self, starting_capital, game_round, game_on)
+                current_end_of_game = play_blackjack.end_of_game(game_round, game_on)
                 game_round, game_on = current_end_of_game
                 continue
             total_bet_amount = (player_bet_amount[1] * 2)
@@ -328,7 +326,7 @@ class Game_play:
             # Dealer now has a turn provided player has not busted
             if player_points > 21:
                 print("You hand is over 21, you lost this round")
-                current_end_of_game = play_blackjack.end_of_game(self, starting_capital, game_round, game_on)
+                current_end_of_game = play_blackjack.end_of_game(game_round, game_on)
                 game_round, game_on = current_end_of_game
                 continue
             if player_answer.upper() == "S":
@@ -344,7 +342,7 @@ class Game_play:
                 elif dealer_turn_results.upper() == "TIE":
                     print("This round has resulted in a tie, no one wins the pot")
                     self.player_one.capital += player_total_bet_for_this_round
-            current_end_of_game = play_blackjack.end_of_game(self, starting_capital, game_round, game_on)
+            current_end_of_game = play_blackjack.end_of_game(game_round, game_on)
             game_round, game_on = current_end_of_game
 
 
