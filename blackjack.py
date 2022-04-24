@@ -105,10 +105,10 @@ class Player:
             starting_capital = input("How much money would you like to start off with (Minimum $50.00)?  ")
             try:
                 starting_capital = float(starting_capital)
-                if starting_capital >= 50:
-                    break
+                if starting_capital < 50:
+                    raise ValueError( )
                 else:
-                    print("Please enter a dollar value of $50 or more.")
+                    break
 
             except ValueError:
                 print("Please enter a dollar value of $50 or more.")
