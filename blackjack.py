@@ -260,7 +260,7 @@ class Game_play:
             game_on = False
             return game_round, game_on
         print(f"You have ${self.player_one.capital} left.")
-        player_decision = input("Would you like to play another round? ")
+        player_decision = input("Would you like to play another round [\"NO\" any key to continue] to end? ")
         if player_decision.upper() == "NO":
             game_on = False
             print(f"You started out with ${self.player_one.starting_capital}")
