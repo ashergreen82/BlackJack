@@ -46,10 +46,11 @@ import random
 from os import system, name
 
 
-
 class Card:
+
     values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7, 'Eight': 8, 'Nine': 9, 'Ten': 10,
               'Jack': 10, 'Queen': 10, 'King': 10, 'Ace': 11}
+
     def __init__(self, suit, rank):
         self.suit = suit
         self.rank = rank
@@ -63,6 +64,7 @@ class Deck:
 
     suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
     ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
+
     def __init__(self):
         # Note this only happens once upon creation of a new Deck
         self.all_cards = []
@@ -84,7 +86,7 @@ class Deck:
 
 class Player:
 
-    def __init__(self, is_dealer = False):
+    def __init__(self, is_dealer=False):
         # A new player has no cards
         self.player_hand = []
         self.is_dealer = is_dealer
@@ -178,7 +180,7 @@ class Player:
 
         return player_decision, total_points
 
-    def dealer_turn(self, deal_results, deck, player_results, player, clear):
+    def dealer_turn(self, deck, player_results, player, clear):
         playing_hand_dealer = True
         self.is_dealer = False
 
@@ -199,7 +201,6 @@ class Player:
                     return "WIN"
                 elif player_dealer_points == player_results:
                     return "TIE"
-        return deal_results
 
     def initial_deal(self, new_deck):
         for i in range(2):
@@ -207,8 +208,8 @@ class Player:
 
         return self.player_hand, self.player_hand
 
-class Game_play:
-    # player_dealer: Player
+
+class GamePlay:
 
     def __init__(self):
         self.clear()
@@ -260,7 +261,7 @@ class Game_play:
             game_on = False
             return game_round, game_on
         print(f"You have ${self.player_one.capital} left.")
-        player_decision = input("Would you like to play another round [\"NO\" any key to continue] to end? ")
+        player_decision = input("Would you like to play another round [type \"NO\" to end, or any key to continue]? ")
         if player_decision.upper() == "NO":
             game_on = False
             print(f"You started out with ${self.player_one.starting_capital}")
@@ -278,12 +279,8 @@ class Game_play:
     def game_play(self):
         game_on = True
         game_round = 1
-        # deal_results = []
-        # dealer_turn_results = []
-        # player_turn_results = []
         self.clear()
         while game_on:
-            player_bet_amount = 0
             player_total_bet_for_this_round = 0
             self.new_deck = Deck()
             self.new_deck.shuffle()
@@ -303,8 +300,8 @@ class Game_play:
                 continue
             total_bet_amount = (player_bet_amount[1] * 2)
             # Deal two cards to the player and two to the dealer
-            deal_results = self.player_one.initial_deal(self.new_deck)
-            deal_results = self.player_dealer.initial_deal(self.new_deck)
+            self.player_one.initial_deal(self.new_deck)
+            self.player_dealer.initial_deal(self.new_deck)
             # Displaying the cards, showing 1 of the dealer's cards and all the player's cards
             # self.player_dealer.player_hand = [Card("Clubs", "Ace"), Card("Spades", "Seven", ), Card("Clubs", "Eight")]
             # self.player_dealer.player_hand = [Card("Diamonds", "Queen"), Card("Spades", "Nine", )]
@@ -331,7 +328,7 @@ class Game_play:
                 continue
             if player_answer.upper() == "S":
                 # dealer_turn_results = self.dealer_turn(deal_results, player_points)
-                dealer_turn_results = self.player_dealer.dealer_turn(deal_results, self.new_deck, player_points, self.player_one, self.clear)
+                dealer_turn_results = self.player_dealer.dealer_turn(self.new_deck, player_points, self.player_one, self.clear)
                 if dealer_turn_results.upper() == "WIN":
                     print("Congratulations! You win the hand!")
                     # Player wins the pot and is added to player_one.capital
@@ -347,5 +344,5 @@ class Game_play:
 
 
 if __name__ == '__main__':
-    play_blackjack = Game_play()
+    play_blackjack = GamePlay()
     play_blackjack.game_play()
